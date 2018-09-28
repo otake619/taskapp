@@ -23,6 +23,8 @@ class Task: Object {
     
     //カテゴリー
     @objc dynamic var category = ""
+    //カテゴリーを表示
+    @objc dynamic var categoryPrint = ""
     
     /**
      id をプライマリーキーとして設定

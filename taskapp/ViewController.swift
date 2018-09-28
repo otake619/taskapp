@@ -12,6 +12,9 @@ import UserNotifications
 
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
+    //categorySearchBarを追加
+    @IBOutlet weak var categorySearchBar: UISearchBar!
+    
     @IBOutlet weak var tableView: UITableView!
     let realm = try! Realm()
     // DB内のタスクが格納されるリスト。
@@ -83,6 +86,10 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         let inputViewController:InputViewController = segue.destination as! InputViewController
+        
+        if categorySearchBar?.text == inputViewController.categoryTextField?.text! {
+    //categorySearchBarと合致するタスクのみ絞り込み表示
+        }
         
         if segue.identifier == "cellSegue" {
             let indexPath = self.tableView.indexPathForSelectedRow

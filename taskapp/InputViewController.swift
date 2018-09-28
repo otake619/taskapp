@@ -26,6 +26,7 @@ class InputViewController: UIViewController {
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapGesture)
         
+        categoryTextField.text = task.category
         titleTextField.text = task.title
         contentsTextView.text = task.contents
         datePicker.date = task.date
@@ -43,6 +44,7 @@ class InputViewController: UIViewController {
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date
             self.realm.add(self.task, update: true)
+            self.task.category = self.categoryTextField.text!
         }
         setNotification(task: task)
         super.viewWillDisappear(animated)
@@ -60,13 +62,6 @@ class InputViewController: UIViewController {
         } else {
             content.body = task.contents
         }
-        //categoryの中身がない場合の処理を設定
-        if categoryTextField.text == ""{
-            content.body = content.body + "(カテゴリーなし)"
-        }else{
-            content.body = content.body + categoryTextField.text!
-        }
-        
         
         content.sound = UNNotificationSound.default()
         
