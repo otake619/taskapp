@@ -87,8 +87,18 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         let inputViewController:InputViewController = segue.destination as! InputViewController
         
-        if categorySearchBar?.text == inputViewController.categoryTextField?.text! {
-    //categorySearchBarと合致するタスクのみ絞り込み表示
+//        taskArray = taskArray.sorted(byKeyPath: categorySearchBar.text!)
+//        if categorySearchBar?.text == inputViewController.task?.category {
+//            taskArray = taskArray.sorted(byKeyPath: categorySearchBar.text!
+        
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            // Cellの内容を決める
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier:categorySearchBar.text! ,for: indexPath)
+            
+            
+            return cell
+            
         }
         
         if segue.identifier == "cellSegue" {
