@@ -10,13 +10,13 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
     
     //categorySearchBarを追加
     @IBOutlet weak var categorySearchBar: UISearchBar!
-    
     @IBOutlet weak var tableView: UITableView!
     let realm = try! Realm()
+    var categoryArray = [String]()
     // DB内のタスクが格納されるリスト。
     // 日付近い順\順でソート：降順
     // 以降内容をアップデートするとリスト内は自動的に更新される。
@@ -26,9 +26,19 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         
         tableView.delegate = self
         tableView.dataSource = self
+        categorySearchBar.delegate = self
+       
         // Do any additional setup after loading the view, typically from a nib.
     }
-    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText == ""{
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+        }else{
+            taskArray = try! Realm().objects(Task.self).filter("category == %@",searchText)
+            
+        }
+        tableView.reloadData()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -91,14 +101,31 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 //        if categorySearchBar?.text == inputViewController.task?.category {
 //            taskArray = taskArray.sorted(byKeyPath: categorySearchBar.text!
         
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            // Cellの内容を決める
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier:categorySearchBar.text! ,for: indexPath)
-            
-            
-            return cell
-            
+//        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//            // Cellの内容を決める
+//
+//            let cell = tableView.dequeueReusableCell(withIdentifier:"Cell" ,for: indexPath)
+//
+//
+//            return cell
+        
+//        if categorySearchBar?.text == inputViewController.categoryTextField?.text!{
+//            categoryArray = [inputViewController.categoryTextField.text!]
+//            func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//            let cell = tableView.dequeueReusableCell(withIdentifier:"Cell" ,for: indexPath)
+//                return cell
+//        }
+//        if categorySearchBar.text == "" {
+//
+//        }else{
+//            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date",ascending:false)
+//        }
+        func tableView(_ tableView: UITableView,indexPath: IndexPath){
+            if categorySearchBar?.text == "" {
+                
+                
+                let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+            }
         }
         
         if segue.identifier == "cellSegue" {
@@ -122,6 +149,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         tableView.reloadData()
         
     }
+    
     
     
     
